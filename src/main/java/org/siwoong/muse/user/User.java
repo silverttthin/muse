@@ -41,12 +41,12 @@ public class User {
     private Status status;
 
     @Builder
-    public User(String email, String password, String nickname, String description, Role role, Status status) {
+    public User(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.description = description;
-        this.role = role;
-        this.status = status;
+        this.description = "설명을 입력해주세요.";
+        this.role = Role.USER;
+        this.status = Status.ACTIVE;
     }
 }
