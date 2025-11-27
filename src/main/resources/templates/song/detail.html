@@ -16,9 +16,13 @@
   <section>
     <h1 th:text="${song.title}">곡 제목</h1>
 
+    <div th:if="${song.albumImageUrl != null}">
+      <img th:src="${song.albumImageUrl}" alt="앨범 이미지" style="max-width: 300px; border-radius: 8px; margin-top: 10px;">
+    </div>
+
     <p>
       아티스트:
-      <span th:text="${song.artist}">Artist</span>
+      <a th:text="${song.artist}" th:href="${song.artistDetailUrl}">Artist</a>
     </p>
 
     <p>
