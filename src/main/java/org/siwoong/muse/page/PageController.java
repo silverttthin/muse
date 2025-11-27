@@ -44,11 +44,4 @@ public class PageController {
         return "index";
     }
 
-    // 마이페이지 (로그인 필요, 나중에 인터셉터로 보호)
-    @GetMapping("/mypage")
-    public String myPage(Model model) {
-        // 세션에서 LOGIN_USER 읽어서 뭔가 보여주고 싶으면
-        // 컨트롤러에서 세션 꺼내도 되고, 템플릿에서 session.LOGIN_USER 써도 됨.
-        return "user/mypage"; // templates/user/mypage.html
-    }
 }
