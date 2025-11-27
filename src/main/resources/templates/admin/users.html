@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('관리자 - 사용자 관리')}"></head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 1000px; margin: 40px auto; font-family: sans-serif;">
+
+  <h1>관리자 - 사용자 관리</h1>
+
+  <p style="margin-bottom: 16px; font-size: 0.9em;">
+    <span th:text="${loginUser.nickname}">관리자</span> 님으로 로그인됨
+  </p>
+
+  <table style="width:100%; border-collapse: collapse;">
+    <thead>
+    <tr>
+      <th style="border-bottom:1px solid #ccc; padding:8px;">ID</th>
+      <th style="border-bottom:1px solid #ccc; padding:8px;">이메일</th>
+      <th style="border-bottom:1px solid #ccc; padding:8px;">닉네임</th>
+      <th style="border-bottom:1px solid #ccc; padding:8px;">Role</th>
+      <th style="border-bottom:1px solid #ccc; padding:8px;">Status</th>
+      <th style="border-bottom:1px solid #ccc; padding:8px;">액션</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${users}">
+      <td style="border-bottom:1px solid #eee; padding:8px;"
+          th:text="${u.id}">1</td>
+      <td style="border-bottom:1px solid #eee; padding:8px;"
+          th:text="${u.email}">email@example.com</td>
+      <td style="border-bottom:1px solid #eee; padding:8px;">
+        <a th:href="@{'/users/' + ${u.id}}"
+           th:text="${u.nickname}">닉네임</a>
+      </td>
+
+      <!-- role/status 변경 폼 -->
+      <td style="border-bottom:1px solid #eee; padding:8px;">
+        <form th:action="@{'/admin/users/' + ${u.id}}"
+              method="post"
+              style="margin:0; display:flex; gap:4px; align-items:center;">
+
+          <select name="role">
+            <option th:each="r : ${roles}"
+                    th:value="${r.name()}"
+                    th:text="${r.name()}"
+                    th:selected="${r == u.role}">
+            </option>
+          </select>
+      </td>
+
+      <td style="border-bottom:1px solid #eee; padding:8px;">
+        <select name="status">
+          <option th:each="s : ${statuses}"
+                  th:value="${s.name()}"
+                  th:text="${s.name()}"
+                  th:selected="${s == u.status}">
+          </option>
+        </select>
+      </td>
+
+      <td style="border-bottom:1px solid #eee; padding:8px;">
+        <button type="submit" style="font-size:0.9em;">저장</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</main>
+</body>
+</html>

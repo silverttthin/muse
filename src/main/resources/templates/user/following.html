@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('팔로잉 목록')}"></head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 800px; margin: 40px auto; font-family: sans-serif;">
+
+  <h1>
+    <span th:text="${targetUser.nickname}">닉네임</span>
+    님이 팔로우하는 유저
+  </h1>
+
+  <p style="margin-bottom: 16px;">
+    <a th:href="@{'/users/' + ${targetUser.id}}">프로필로 돌아가기</a>
+  </p>
+
+  <div th:if="${#lists.isEmpty(followingList)}">
+    <p>팔로우하는 유저가 없습니다.</p>
+  </div>
+
+  <ul th:if="${!#lists.isEmpty(followingList)}"
+      style="list-style:none; padding-left:0;">
+    <li th:each="f : ${followingList}"
+        style="border-bottom:1px solid #eee; padding:8px 0; display:flex; justify-content:space-between; align-items:center;">
+
+      <!-- 팔로우 대상 유저 -->
+      <div>
+        <a th:href="@{'/users/' + ${f.toUser.id}}">
+          <strong th:text="${f.toUser.nickname}">닉네임</strong>
+        </a>
+        <span style="font-size:0.9em; color:#666; margin-left:8px;"
+              th:text="${f.toUser.description}">
+          소개글
+        </span>
+      </div>
+
+      <!-- 내가 보는 화면이고, loginUser가 직접 언팔 가능할 때 -->
+      <div th:if="${loginUser != null and loginUser.id == targetUser.id}">
+        <form th:action="@{'/users/' + ${f.toUser.id} + '/unfollow'}"
+              method="post"
+              style="margin:0;">
+          <button type="submit" style="font-size:0.8em;">언팔로우</button>
+        </form>
+      </div>
+
+    </li>
+  </ul>
+
+</main>
+</body>
+</html>

@@ -3,6 +3,7 @@ package org.siwoong.muse.song;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.siwoong.muse.common.BaseEntity;
 import org.siwoong.muse.user.User;
 
 @Entity
@@ -20,7 +21,7 @@ import org.siwoong.muse.user.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SongRating {
+public class SongRating extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +40,8 @@ public class SongRating {
     // 0.5 ~ 5.0 이런 식으로 쓸 예정이면 Float/Double
     @Column(nullable = false)
     private Float score;
+
+    public void updateScore(Float newScore) {
+        this.score = newScore;
+    }
 }

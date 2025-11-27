@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/header :: head('노래 목록')}">
+</html>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>노래 목록</title>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 900px; margin: 40px auto;">
+  <h1>노래 목록</h1>
+
+  <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+    <thead>
+    <tr>
+      <th style="border-bottom: 1px solid #ddd; text-align:left;">제목</th>
+      <th style="border-bottom: 1px solid #ddd; text-align:left;">아티스트</th>
+      <th style="border-bottom: 1px solid #ddd; text-align:left;">장르</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="song : ${songs}">
+      <td style="padding: 6px 4px;">
+        <a th:href="@{'/songs/' + ${song.id}}"
+           th:text="${song.title}">곡 제목</a>
+      </td>
+      <td style="padding: 6px 4px;" th:text="${song.artist}">아티스트</td>
+      <td style="padding: 6px 4px;" th:text="${song.playlistGenre}">장르</td>
+    </tr>
+    </tbody>
+  </table>
+</main>
+
+</body>
+</html>

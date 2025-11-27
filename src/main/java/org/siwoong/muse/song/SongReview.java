@@ -3,17 +3,25 @@ package org.siwoong.muse.song;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import org.siwoong.muse.common.BaseEntity;
 import org.siwoong.muse.user.User;
 
 @Entity
-@Table(name = "song_reviews")
+@Table(
+    name = "song_reviews",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uk_song_review_user_song",
+            columnNames = {"user_id", "song_id"}
+        )
+    }
+)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SongReview {
+public class SongReview extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +43,13 @@ public class SongReview {
     // 소프트 삭제 플래그
     @Column(nullable = false)
     private boolean deleted = false;
+
+    public void updateContent(String newContent) {
+        this.content = newContent;
+    }
+
+    public void softDelete() {
+        this.deleted = true;
+    }
 
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/header :: head('로그인')}">
+</html>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인</title>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 400px; margin: 40px auto;">
+  <h1>로그인</h1>
+
+  <!-- 에러 메시지 -->
+  <div th:if="${error}" style="color: red; margin-bottom: 10px;"
+       th:text="${error}">
+    에러 메시지
+  </div>
+
+  <form th:action="@{/login}" th:object="${loginRequest}" method="post"
+        style="display: flex; flex-direction: column; gap: 10px;">
+
+    <label>
+      이메일
+      <input type="email" th:field="*{email}" placeholder="이메일을 입력하세요" required>
+    </label>
+
+    <label>
+      비밀번호
+      <input type="password" th:field="*{password}" placeholder="비밀번호" required>
+    </label>
+
+    <button type="submit" style="margin-top: 10px;">로그인</button>
+  </form>
+
+  <p style="margin-top: 15px;">
+    아직 계정이 없나요?
+    <a th:href="@{/signup}">회원가입</a>
+  </p>
+</main>
+
+</body>
+</html>

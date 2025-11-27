@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('홈')}"></head>
+<body>
+
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 800px; margin: 40px auto;">
+  <h1>Muse</h1>
+
+  <!-- 1. 비로그인: 로그인 안내 -->
+  <div th:if="${session.LOGIN_USER == null}">
+    <p>로그인하면 나만의 추천, 리뷰 기능을 사용할 수 있습니다.</p>
+    <a th:href="@{/login}">로그인 하러가기</a>
+  </div>
+
+  <!-- 2. 로그인 상태 -->
+  <div th:if="${session.LOGIN_USER != null}">
+    <p>
+      <span th:text="${session.LOGIN_USER.nickname}">닉네임</span> 님, 환영합니다.
+    </p>
+    <p>
+      역할:
+      <span th:text="${session.LOGIN_USER.role}">ROLE</span>
+    </p>
+
+    <!-- 2-1. 콜드스타트: 추천 X, 평점 안내 -->
+    <div th:if="${coldStart}">
+      <h2>아직 추천을 만들기 어려워요</h2>
+      <p>
+        먼저 몇 곡에 별점을 남겨주면,<br/>
+        당신의 취향을 학습해서 홈에서 추천 곡을 보여드릴게요.
+      </p>
+      <a th:href="@{/songs}">곡 리스트 보러가기</a>
+    </div>
+
+    <!-- 2-2. 추천 가능: 10곡 랜덤 노출 -->
+    <div th:if="${!coldStart}">
+      <h2>나를 위한 추천 곡</h2>
+      <ul>
+        <li th:each="item : ${recommendations}">
+          <a th:href="@{'/songs/' + ${item.songId}}">
+            <span th:text="${item.title}">곡 제목</span>
+            -
+            <span th:text="${item.artist}">아티스트</span>
+          </a>
+          <!-- 점수 보고 싶으면 풀어서 사용 -->
+          <!-- (<span th:text="${#numbers.formatDecimal(item.score, 1, 3)}">0.0</span>) -->
+        </li>
+      </ul>
+      <p>
+        <a th:href="@{/recommendations}">추천 더 보기</a>
+      </p>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

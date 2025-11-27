@@ -15,3 +15,7 @@ spring:
 
       hibernate:
         format_sql: true
+
+
+recommender:
+  base-url: http://localhost:8000/api/v1

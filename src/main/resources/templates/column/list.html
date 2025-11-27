@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('칼럼 목록')}"></head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+  <h1>칼럼 목록</h1>
+
+  <div style="margin-bottom: 12px;"
+       th:if="${loginUser != null and (loginUser.role.name() == 'CURATOR' or loginUser.role.name() == 'ADMIN')}">
+    <a th:href="@{/columns/new}">새 칼럼 작성</a>
+  </div>
+
+
+  <div th:if="${#lists.isEmpty(columns)}">
+    <p>등록된 칼럼이 없습니다.</p>
+  </div>
+
+  <ul th:if="${!#lists.isEmpty(columns)}" style="list-style:none; padding-left:0;">
+    <li th:each="col : ${columns}"
+        style="border-bottom:1px solid #eee; padding:8px 0;">
+      <a th:href="@{'/columns/' + ${col.id}}">
+        <strong th:text="${col.title}">제목</strong>
+      </a>
+      <span style="font-size:0.9em; color:#666; margin-left:8px;"
+            th:text="${col.author.nickname}">작성자</span>
+      <div style="font-size:0.85em; color:#999;"
+           th:text="${#temporals.format(col.createdAt, 'yyyy-MM-dd HH:mm')}">
+        2025-01-01 12:00
+      </div>
+    </li>
+  </ul>
+</main>
+</body>
+</html>

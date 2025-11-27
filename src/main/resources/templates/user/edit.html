@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('프로필 수정')}"></head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 600px; margin: 40px auto; font-family: sans-serif;">
+
+  <h1>프로필 수정</h1>
+
+  <!-- 에러 메시지 -->
+  <div th:if="${errorMessage != null}"
+       style="color: red; margin-bottom: 12px;"
+       th:text="${errorMessage}">
+    에러 메시지
+  </div>
+
+  <form th:action="@{/users/me/edit}" method="post"
+        style="display:flex; flex-direction:column; gap:12px;">
+
+    <label>
+      닉네임
+      <input type="text" name="nickname"
+             style="width:100%; padding:4px 6px;"
+             th:value="${user.nickname}">
+    </label>
+
+    <label>
+      소개
+      <textarea name="description" rows="4"
+                style="width:100%;"
+                th:text="${user.description}">소개를 입력해주세요.</textarea>
+    </label>
+
+    <button type="submit">저장</button>
+
+    <a th:href="@{'/users/' + ${user.id}}"
+       style="margin-top:8px; font-size:0.9em;">
+      프로필로 돌아가기
+    </a>
+  </form>
+
+</main>
+</body>
+</html>

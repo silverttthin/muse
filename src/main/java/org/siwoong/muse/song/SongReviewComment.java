@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import org.siwoong.muse.common.BaseEntity;
 import org.siwoong.muse.user.User;
 
 @Entity
@@ -14,7 +15,7 @@ import org.siwoong.muse.user.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SongReviewComment {
+public class SongReviewComment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +36,13 @@ public class SongReviewComment {
 
     @Column(nullable = false)
     private boolean deleted = false;
+
+    public void updateContent(String newContent) {
+        this.content = newContent;
+    }
+
+    public void softDelete() {
+        this.deleted = true;
+    }
 
 }

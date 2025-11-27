@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('유저 프로필')}"></head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+
+  <!-- 기본 정보 -->
+  <section>
+    <h1 th:text="${targetUser.nickname}">닉네임</h1>
+    <p th:text="${targetUser.description}">소개글</p>
+    <p>
+      역할:
+      <span th:text="${targetUser.role}">ROLE</span>
+    </p>
+
+    <!-- 🔽 본인일 때만 수정 버튼 -->
+    <div th:if="${loginUser != null and isMyProfile}">
+      <a th:href="@{/users/me/edit}">프로필 수정</a>
+    </div>
+
+    <p>
+      <a th:href="@{'/users/' + ${targetUser.id} + '/followers'}">
+        팔로워
+        <strong th:text="${followerCount}">0</strong>
+        명
+      </a>
+      ·
+      <a th:href="@{'/users/' + ${targetUser.id} + '/following'}">
+        팔로잉
+        <strong th:text="${followingCount}">0</strong>
+        명
+      </a>
+    </p>
+
+
+    <!-- 팔로우 / 언팔 버튼 -->
+    <div th:if="${loginUser != null and !isMyProfile}">
+      <form th:if="${!isFollowing}"
+            th:action="@{'/users/' + ${targetUser.id} + '/follow'}"
+            method="post"
+            style="display:inline;">
+        <button type="submit">팔로우</button>
+      </form>
+
+      <form th:if="${isFollowing}"
+            th:action="@{'/users/' + ${targetUser.id} + '/unfollow'}"
+            method="post"
+            style="display:inline;">
+        <button type="submit">팔로우 취소</button>
+      </form>
+    </div>
+
+    <div th:if="${loginUser == null}">
+      <p>
+        팔로우 기능을 사용하려면
+        <a th:href="@{/login}">로그인</a>
+        이 필요합니다.
+      </p>
+    </div>
+  </section>
+
+  <hr style="margin: 24px 0;">
+
+  <!-- 이 유저가 남긴 최근 리뷰 -->
+  <section>
+    <h2>최근 곡 리뷰</h2>
+
+    <div th:if="${#lists.isEmpty(recentReviews)}">
+      <p>아직 작성한 리뷰가 없습니다.</p>
+    </div>
+
+    <ul th:if="${!#lists.isEmpty(recentReviews)}"
+        style="list-style:none; padding-left:0;">
+      <li th:each="rev : ${recentReviews}"
+          style="border-bottom:1px solid #eee; padding:8px 0;">
+        <div>
+          <a th:href="@{'/songs/' + ${rev.song.id}}">
+            <strong th:text="${rev.song.title}">곡 제목</strong>
+            <span th:text="' - ' + ${rev.song.artist}"> - 아티스트</span>
+          </a>
+          <span style="font-size:0.85em; color:#666; margin-left:8px;"
+                th:text="${#temporals.format(rev.createdAt, 'yyyy-MM-dd HH:mm')}">
+          </span>
+        </div>
+        <p style="margin:4px 0; white-space:pre-wrap;"
+           th:text="${rev.content}">
+          리뷰 내용
+        </p>
+      </li>
+    </ul>
+  </section>
+
+</main>
+</body>
+</html>

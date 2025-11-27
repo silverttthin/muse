@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('검색 결과')}"></head>
+<body>
+
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+
+  <h1>검색 결과</h1>
+
+  <div style="margin-bottom:16px;">
+    <form th:action="@{/search}" method="get" style="display:flex; gap:8px;">
+      <input type="text" name="query" th:value="${query}"
+             placeholder="검색어를 입력하세요"
+             style="flex:1; padding:4px 8px;">
+      <button type="submit">검색</button>
+    </form>
+  </div>
+
+  <div th:if="${emptyQuery}">
+    <p>검색어를 입력해주세요.</p>
+  </div>
+
+  <div th:if="${!emptyQuery}">
+    <p>
+      "<span th:text="${query}">쿼리</span>" 에 대한 검색 결과입니다.
+    </p>
+
+    <!-- 곡 결과 -->
+    <section style="margin-top:24px;">
+      <h2>곡</h2>
+      <div th:if="${songs == null or #lists.isEmpty(songs)}">
+        <p>일치하는 곡이 없습니다.</p>
+      </div>
+      <ul th:if="${songs != null and !#lists.isEmpty(songs)}"
+          style="list-style:none; padding-left:0;">
+        <li th:each="song : ${songs}"
+            style="padding:4px 0; border-bottom:1px solid #eee;">
+          <a th:href="@{'/songs/' + ${song.id}}">
+            <strong th:text="${song.title}">제목</strong>
+            <span th:text="' - ' + ${song.artist}"> - 아티스트</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 유저 결과 -->
+    <section style="margin-top:24px;">
+      <h2>유저</h2>
+      <div th:if="${users == null or #lists.isEmpty(users)}">
+        <p>일치하는 유저가 없습니다.</p>
+      </div>
+      <ul th:if="${users != null and !#lists.isEmpty(users)}"
+          style="list-style:none; padding-left:0;">
+        <li th:each="user : ${users}"
+            style="padding:4px 0; border-bottom:1px solid #eee;">
+          <a th:href="@{'/users/' + ${user.id}}">
+            <span th:text="${user.nickname}">닉네임</span>
+          </a>
+          <span th:if="${user.description != null}"
+                th:text="' - ' + ${user.description}"> - 소개</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 컬럼 결과 -->
+    <section style="margin-top:24px;">
+      <h2>칼럼</h2>
+      <div th:if="${columns == null or #lists.isEmpty(columns)}">
+        <p>일치하는 칼럼이 없습니다.</p>
+      </div>
+      <ul th:if="${columns != null and !#lists.isEmpty(columns)}"
+          style="list-style:none; padding-left:0;">
+        <li th:each="col : ${columns}"
+            style="padding:4px 0; border-bottom:1px solid #eee;">
+          <a th:href="@{'/columns/' + ${col.id}}">
+            <strong th:text="${col.title}">칼럼 제목</strong>
+          </a>
+          <p style="margin:2px 0; font-size:0.9em; color:#555;"
+             th:text="${#strings.abbreviate(col.content, 80)}">
+            내용 일부...
+          </p>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+</main>
+
+</body>
+</html>

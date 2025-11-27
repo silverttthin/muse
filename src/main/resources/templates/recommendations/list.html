@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+  <title>개인화 추천</title>
+</head>
+<body>
+<h1>나를 위한 추천 곡</h1>
+
+<div th:if="${#lists.isEmpty(recommendations)}">
+  아직 추천할 곡이 없어요. 먼저 몇 곡에 별점을 남겨보세요!
+</div>
+
+<ul th:if="${!#lists.isEmpty(recommendations)}">
+  <li th:each="item : ${recommendations}">
+    <span th:text="${item.title}">곡 제목</span>
+    -
+    <span th:text="${item.artist}">아티스트</span>
+    (<span th:text="${#numbers.formatDecimal(item.score, 1, 3)}">0.0</span>)
+  </li>
+</ul>
+</body>
+</html>

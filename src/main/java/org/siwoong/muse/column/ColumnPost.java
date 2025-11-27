@@ -4,7 +4,7 @@ package org.siwoong.muse.column;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import org.siwoong.muse.common.BaseEntity;
 import org.siwoong.muse.user.User;
 
 @Entity
@@ -14,7 +14,7 @@ import org.siwoong.muse.user.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ColumnPost {
+public class ColumnPost extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +33,14 @@ public class ColumnPost {
 
     @Column(nullable = false)
     private boolean deleted = false;
+
+    public void update(String newTitle, String newContent) {
+        this.title = newTitle;
+        this.content = newContent;
+    }
+
+    public void softDelete() {
+        this.deleted = true;
+    }
 
 }

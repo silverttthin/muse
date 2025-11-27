@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('새 칼럼 작성')}"></head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+
+  <h1>새 칼럼 작성</h1>
+
+  <form th:action="@{/columns}" method="post"
+        style="display:flex; flex-direction:column; gap:12px;">
+
+    <label>
+      제목
+      <input type="text" name="title" style="width:100%; padding:4px 6px;">
+    </label>
+
+    <label>
+      내용
+      <textarea name="content" rows="10" style="width:100%;"></textarea>
+    </label>
+
+    <button type="submit">등록</button>
+  </form>
+
+</main>
+</body>
+</html>
