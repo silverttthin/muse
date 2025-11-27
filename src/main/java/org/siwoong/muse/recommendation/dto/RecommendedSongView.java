@@ -11,7 +11,7 @@ public class RecommendedSongView {
     private String title;
     private String artist;
     private double score;
-
-    // image도 추가하기
+    private String albumImageUrl;
+    private String artistDetailUrl; // 나중에 상세 페이지에서 쓰고 싶으면 같이 넣자
 
 }

@@ -61,6 +61,8 @@ public class RecommendationService {
             view.setTitle(song.getTitle());
             view.setArtist(song.getArtist());
             view.setScore(scoreMap.getOrDefault(songId, 0.0));
+            view.setAlbumImageUrl(song.getAlbumImageUrl());
+            view.setArtistDetailUrl(song.getArtistDetailUrl());
             result.add(view);
         }
 
