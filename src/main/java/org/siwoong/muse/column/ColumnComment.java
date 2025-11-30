@@ -35,4 +35,7 @@ public class ColumnComment {
     @Column(nullable = false)
     private boolean deleted = false;
 
+    @Column(name = "has_profanity", nullable = false)
+    private boolean hasProfanity = false;
+
 }

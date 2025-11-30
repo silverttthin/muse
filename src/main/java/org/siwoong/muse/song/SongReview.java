@@ -44,6 +44,9 @@ public class SongReview extends BaseEntity {
     @Column(nullable = false)
     private boolean deleted = false;
 
+    @Column(name = "has_profanity", nullable = false)
+    private boolean hasProfanity = false;
+
     public void updateContent(String newContent) {
         this.content = newContent;
     }
