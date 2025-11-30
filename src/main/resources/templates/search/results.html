@@ -5,84 +5,91 @@
 
 <div th:replace="~{fragments/header :: navbar}"></div>
 
-<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+<main class="container">
 
-  <h1>검색 결과</h1>
+  <div class="page-header">
+    <h1 class="page-title">검색 결과</h1>
+  </div>
 
-  <div style="margin-bottom:16px;">
-    <form th:action="@{/search}" method="get" style="display:flex; gap:8px;">
-      <input type="text" name="query" th:value="${query}"
+  <!-- 검색 폼 -->
+  <div class="search-box">
+    <form th:action="@{/search}" method="get" class="search-form-large">
+      <input type="text"
+             name="query"
+             th:value="${query}"
              placeholder="검색어를 입력하세요"
-             style="flex:1; padding:4px 8px;">
-      <button type="submit">검색</button>
+             class="search-input-large">
+      <button type="submit" class="btn-primary">검색</button>
     </form>
   </div>
 
-  <div th:if="${emptyQuery}">
+  <!-- 빈 검색어 -->
+  <div th:if="${emptyQuery}" class="empty-state">
     <p>검색어를 입력해주세요.</p>
   </div>
 
+  <!-- 검색 결과 -->
   <div th:if="${!emptyQuery}">
-    <p>
-      "<span th:text="${query}">쿼리</span>" 에 대한 검색 결과입니다.
+    <p class="search-query-text">
+      "<strong th:text="${query}">쿼리</strong>" 에 대한 검색 결과입니다.
     </p>
 
     <!-- 곡 결과 -->
-    <section style="margin-top:24px;">
-      <h2>곡</h2>
-      <div th:if="${songs == null or #lists.isEmpty(songs)}">
+    <section class="search-section">
+      <h2 class="search-section-title">곡</h2>
+
+      <div th:if="${songs == null or #lists.isEmpty(songs)}" class="search-empty">
         <p>일치하는 곡이 없습니다.</p>
       </div>
-      <ul th:if="${songs != null and !#lists.isEmpty(songs)}"
-          style="list-style:none; padding-left:0;">
-        <li th:each="song : ${songs}"
-            style="padding:4px 0; border-bottom:1px solid #eee;">
-          <a th:href="@{'/songs/' + ${song.id}}">
+
+      <div th:if="${songs != null and !#lists.isEmpty(songs)}" class="search-results">
+        <div th:each="song : ${songs}" class="search-result-item">
+          <a th:href="@{'/songs/' + ${song.id}}" class="search-result-link">
             <strong th:text="${song.title}">제목</strong>
-            <span th:text="' - ' + ${song.artist}"> - 아티스트</span>
+            <span class="search-result-meta" th:text="' - ' + ${song.artist}"> - 아티스트</span>
           </a>
-        </li>
-      </ul>
+        </div>
+      </div>
     </section>
 
     <!-- 유저 결과 -->
-    <section style="margin-top:24px;">
-      <h2>유저</h2>
-      <div th:if="${users == null or #lists.isEmpty(users)}">
+    <section class="search-section">
+      <h2 class="search-section-title">유저</h2>
+
+      <div th:if="${users == null or #lists.isEmpty(users)}" class="search-empty">
         <p>일치하는 유저가 없습니다.</p>
       </div>
-      <ul th:if="${users != null and !#lists.isEmpty(users)}"
-          style="list-style:none; padding-left:0;">
-        <li th:each="user : ${users}"
-            style="padding:4px 0; border-bottom:1px solid #eee;">
-          <a th:href="@{'/users/' + ${user.id}}">
-            <span th:text="${user.nickname}">닉네임</span>
+
+      <div th:if="${users != null and !#lists.isEmpty(users)}" class="search-results">
+        <div th:each="user : ${users}" class="search-result-item">
+          <a th:href="@{'/users/' + ${user.id}}" class="search-result-link">
+            <strong th:text="${user.nickname}">닉네임</strong>
+            <span class="search-result-meta"
+                  th:if="${user.description != null}"
+                  th:text="' - ' + ${user.description}"> - 소개</span>
           </a>
-          <span th:if="${user.description != null}"
-                th:text="' - ' + ${user.description}"> - 소개</span>
-        </li>
-      </ul>
+        </div>
+      </div>
     </section>
 
-    <!-- 컬럼 결과 -->
-    <section style="margin-top:24px;">
-      <h2>칼럼</h2>
-      <div th:if="${columns == null or #lists.isEmpty(columns)}">
+    <!-- 칼럼 결과 -->
+    <section class="search-section">
+      <h2 class="search-section-title">칼럼</h2>
+
+      <div th:if="${columns == null or #lists.isEmpty(columns)}" class="search-empty">
         <p>일치하는 칼럼이 없습니다.</p>
       </div>
-      <ul th:if="${columns != null and !#lists.isEmpty(columns)}"
-          style="list-style:none; padding-left:0;">
-        <li th:each="col : ${columns}"
-            style="padding:4px 0; border-bottom:1px solid #eee;">
-          <a th:href="@{'/columns/' + ${col.id}}">
+
+      <div th:if="${columns != null and !#lists.isEmpty(columns)}" class="search-results">
+        <div th:each="col : ${columns}" class="search-result-item column-result">
+          <a th:href="@{'/columns/' + ${col.id}}" class="search-result-link">
             <strong th:text="${col.title}">칼럼 제목</strong>
           </a>
-          <p style="margin:2px 0; font-size:0.9em; color:#555;"
-             th:text="${#strings.abbreviate(col.content, 80)}">
+          <p class="column-excerpt" th:text="${#strings.abbreviate(col.content, 100)}">
             내용 일부...
           </p>
-        </li>
-      </ul>
+        </div>
+      </div>
     </section>
   </div>
 
