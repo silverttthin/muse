@@ -4,21 +4,19 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.siwoong.muse.recommendation.RecommendationService;
 import org.siwoong.muse.recommendation.dto.RecommendedSongView;
-import org.siwoong.muse.song.service.SongService;
 import org.siwoong.muse.user.UserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+
 @Controller
 @RequiredArgsConstructor
 public class PageController {
 
     // 나중에 홈에 보여줄 데이터가 생기면 서비스 주입해서 사용하면 됨
-     private final SongService songService;
      private final RecommendationService recommendationService;
-    // private final ColumnService columnService;
 
     // 홈 화면
     @GetMapping("/")
