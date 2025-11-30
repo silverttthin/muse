@@ -2,49 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head(title)">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title th:text="${title}">Muse</title>
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header th:fragment="navbar">
-  <nav style="display:flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ddd;">
-    <div>
-      <a th:href="@{/}" style="margin-right: 10px; font-weight: bold;">Muse</a>
-      <a th:href="@{/columns}" style="margin-right: 10px;">칼럼</a>
-      <a th:href="@{/songs}" style="margin-right: 10px;">노래 목록</a>
-      <a th:href="@{/recommendations}"style="margin-right: 10px;">노래 추천</a>
-      <!-- 예시: navbar fragment 안 -->
-      <span th:if="${session.LOGIN_USER != null
-           and session.LOGIN_USER.role.name() == 'ADMIN'}">
-        <a th:href="@{/admin/users}">관리자</a>
+<header th:fragment="navbar" class="header">
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a th:href="@{/}" class="logo">Muse</a>
+      <a th:href="@{/columns}" class="nav-link">칼럼</a>
+      <a th:href="@{/songs}" class="nav-link">노래 목록</a>
+      <a th:href="@{/recommendations}" class="nav-link">노래 추천</a>
+      <span th:if="${session.LOGIN_USER != null and session.LOGIN_USER.role.name() == 'ADMIN'}">
+        <a th:href="@{/admin/users}" class="nav-link">관리자</a>
       </span>
     </div>
 
-    <!-- 🔍 검색 폼 추가 -->
-    <form th:action="@{/search}" method="get" style="margin:0; display:flex; gap:4px;">
-      <input type="text" name="query" placeholder="노래 / 유저 / 칼럼 검색"
-             style="padding:2px 6px;">
-      <button type="submit">검색</button>
+    <form th:action="@{/search}" method="get" class="search-form">
+      <input type="text" name="query" placeholder="노래 / 유저 / 칼럼 검색" class="search-input">
+      <button type="submit" class="search-button">검색</button>
     </form>
 
-
-    <div>
-
-      <!-- 로그인 O -->
+    <div class="navbar-right">
       <span th:if="${session.LOGIN_USER != null}">
-                 <a th:href="@{'/users/' + ${session.LOGIN_USER.id}}" style="margin-right:6px;">
-                  <strong th:text="${session.LOGIN_USER.nickname}">닉네임</strong>
-                </a> 님&nbsp;
-                <form th:action="@{/logout}" method="post" style="display:inline;">
-                    <button type="submit">로그아웃</button>
-                </form>
-            </span>
+        <a th:href="@{'/users/' + ${session.LOGIN_USER.id}}" class="user-link">
+          <strong th:text="${session.LOGIN_USER.nickname}">닉네임</strong>
+        </a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+          <button type="submit" class="btn-secondary">로그아웃</button>
+        </form>
+      </span>
 
-      <!-- 로그인 X -->
-      <span th:if="${session.LOGIN_USER == null}">
-                <a th:href="@{/login}" style="margin-right: 8px;">로그인</a>
-                <a th:href="@{/signup}">회원가입</a>
-            </span>
+      <span th:if="${session.LOGIN_USER == null}" class="auth-links">
+        <a th:href="@{/login}" class="nav-link">로그인</a>
+        <a th:href="@{/signup}" class="btn-primary">회원가입</a>
+      </span>
     </div>
   </nav>
 </header>
