@@ -1224,3 +1224,86 @@ a {
   font-weight: 500;
   margin: 0;
 }
+
+/* styles.css에 추가 */
+
+/* ========== Link Back ========== */
+.link-back {
+  display: inline-block;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 12px;
+  transition: color 0.2s;
+}
+
+.link-back:hover {
+  color: var(--primary);
+}
+
+/* ========== User List ========== */
+.user-list {
+  background-color: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.user-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+}
+
+.user-list-item:last-child {
+  border-bottom: none;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.user-name:hover {
+  color: var(--primary);
+}
+
+.user-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-actions {
+  flex-shrink: 0;
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .user-list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .user-actions {
+    width: 100%;
+  }
+
+  .user-actions button {
+    width: 100%;
+  }
+}

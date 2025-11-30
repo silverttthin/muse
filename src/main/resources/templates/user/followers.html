@@ -4,48 +4,38 @@
 <body>
 <div th:replace="~{fragments/header :: navbar}"></div>
 
-<main style="max-width: 800px; margin: 40px auto; font-family: sans-serif;">
+<main class="container">
 
-  <h1>
-    <span th:text="${targetUser.nickname}">닉네임</span>
-    님을 팔로우하는 유저
-  </h1>
+  <div class="page-header">
+    <h1 class="page-title">
+      <span th:text="${targetUser.nickname}">닉네임</span>님을 팔로우하는 유저
+    </h1>
+    <a th:href="@{'/users/' + ${targetUser.id}}" class="link-back">← 프로필로 돌아가기</a>
+  </div>
 
-  <p style="margin-bottom: 16px;">
-    <a th:href="@{'/users/' + ${targetUser.id}}">프로필로 돌아가기</a>
-  </p>
-
-  <div th:if="${#lists.isEmpty(followerList)}">
+  <div th:if="${#lists.isEmpty(followerList)}" class="empty-state">
     <p>아직 팔로워가 없습니다.</p>
   </div>
 
-  <ul th:if="${!#lists.isEmpty(followerList)}"
-      style="list-style:none; padding-left:0;">
-    <li th:each="f : ${followerList}"
-        style="border-bottom:1px solid #eee; padding:8px 0; display:flex; justify-content:space-between; align-items:center;">
+  <div th:if="${!#lists.isEmpty(followerList)}" class="user-list">
+    <div th:each="f : ${followerList}" class="user-list-item">
 
-      <!-- 나를 팔로우하는 유저 -->
-      <div>
-        <a th:href="@{'/users/' + ${f.fromUser.id}}">
+      <div class="user-info">
+        <a th:href="@{'/users/' + ${f.fromUser.id}}" class="user-name">
           <strong th:text="${f.fromUser.nickname}">닉네임</strong>
         </a>
-        <span style="font-size:0.9em; color:#666; margin-left:8px;"
-              th:text="${f.fromUser.description}">
-          소개글
-        </span>
+        <p class="user-description" th:text="${f.fromUser.description}">소개글</p>
       </div>
 
-      <!-- 내가 내 페이지를 보고 있고, 아직 내가 상대를 팔로우 안 했다면 팔로우 버튼 -->
-      <div th:if="${loginUser != null and loginUser.id == targetUser.id}">
+      <div th:if="${loginUser != null and loginUser.id == targetUser.id}" class="user-actions">
         <form th:action="@{'/users/' + ${f.fromUser.id} + '/follow'}"
-              method="post"
-              style="margin:0;">
-          <button type="submit" style="font-size:0.8em;">맞팔하기</button>
+              method="post">
+          <button type="submit" class="btn-secondary">맞팔하기</button>
         </form>
       </div>
 
-    </li>
-  </ul>
+    </div>
+  </div>
 
 </main>
 </body>
