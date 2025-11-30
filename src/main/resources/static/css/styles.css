@@ -1077,3 +1077,126 @@ a {
     text-align: center;
   }
 }
+
+/* styles.css에 추가 */
+
+/* ========== Profile Header ========== */
+.profile-header {
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.profile-description {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.profile-role {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: var(--bg);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 16px;
+}
+
+.profile-actions {
+  flex-shrink: 0;
+}
+
+/* ========== Profile Stats ========== */
+.profile-stats {
+  display: flex;
+  gap: 32px;
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 24px 40px;
+  box-shadow: var(--shadow);
+  margin-bottom: 32px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.stat-number {
+  font-size: 24px;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ========== Profile Reviews ========== */
+.profile-reviews {
+  margin-top: 32px;
+}
+
+.review-song {
+  color: var(--primary);
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.review-song:hover {
+  color: var(--primary-dark);
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .profile-name {
+    font-size: 24px;
+  }
+
+  .profile-actions {
+    width: 100%;
+  }
+
+  .profile-actions .btn-primary,
+  .profile-actions .btn-secondary {
+    width: 100%;
+  }
+
+  .profile-stats {
+    padding: 20px;
+    justify-content: space-around;
+  }
+}

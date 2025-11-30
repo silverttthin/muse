@@ -4,92 +4,77 @@
 <body>
 <div th:replace="~{fragments/header :: navbar}"></div>
 
-<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+<main class="container">
 
-  <!-- 기본 정보 -->
-  <section>
-    <h1 th:text="${targetUser.nickname}">닉네임</h1>
-    <p th:text="${targetUser.description}">소개글</p>
-    <p>
-      역할:
-      <span th:text="${targetUser.role}">ROLE</span>
-    </p>
-
-    <!-- 🔽 본인일 때만 수정 버튼 -->
-    <div th:if="${loginUser != null and isMyProfile}">
-      <a th:href="@{/users/me/edit}">프로필 수정</a>
+  <!-- 프로필 헤더 -->
+  <div class="profile-header">
+    <div class="profile-info">
+      <h1 class="profile-name" th:text="${targetUser.nickname}">닉네임</h1>
+      <p class="profile-description" th:text="${targetUser.description}">소개글</p>
+      <span class="profile-role" th:text="${targetUser.role}">ROLE</span>
     </div>
 
-    <p>
-      <a th:href="@{'/users/' + ${targetUser.id} + '/followers'}">
-        팔로워
-        <strong th:text="${followerCount}">0</strong>
-        명
-      </a>
-      ·
-      <a th:href="@{'/users/' + ${targetUser.id} + '/following'}">
-        팔로잉
-        <strong th:text="${followingCount}">0</strong>
-        명
-      </a>
-    </p>
+    <div class="profile-actions">
+      <!-- 본인일 때 수정 버튼 -->
+      <div th:if="${loginUser != null and isMyProfile}">
+        <a th:href="@{/users/me/edit}" class="btn-primary">프로필 수정</a>
+      </div>
 
+      <!-- 다른 유저일 때 팔로우 버튼 -->
+      <div th:if="${loginUser != null and !isMyProfile}">
+        <form th:if="${!isFollowing}"
+              th:action="@{'/users/' + ${targetUser.id} + '/follow'}"
+              method="post">
+          <button type="submit" class="btn-primary">팔로우</button>
+        </form>
 
-    <!-- 팔로우 / 언팔 버튼 -->
-    <div th:if="${loginUser != null and !isMyProfile}">
-      <form th:if="${!isFollowing}"
-            th:action="@{'/users/' + ${targetUser.id} + '/follow'}"
-            method="post"
-            style="display:inline;">
-        <button type="submit">팔로우</button>
-      </form>
+        <form th:if="${isFollowing}"
+              th:action="@{'/users/' + ${targetUser.id} + '/unfollow'}"
+              method="post">
+          <button type="submit" class="btn-secondary">팔로우 취소</button>
+        </form>
+      </div>
 
-      <form th:if="${isFollowing}"
-            th:action="@{'/users/' + ${targetUser.id} + '/unfollow'}"
-            method="post"
-            style="display:inline;">
-        <button type="submit">팔로우 취소</button>
-      </form>
+      <!-- 비로그인 -->
+      <div th:if="${loginUser == null}" class="login-prompt">
+        <p>팔로우 기능을 사용하려면 <a th:href="@{/login}" class="link-primary">로그인</a>이 필요합니다.</p>
+      </div>
     </div>
+  </div>
 
-    <div th:if="${loginUser == null}">
-      <p>
-        팔로우 기능을 사용하려면
-        <a th:href="@{/login}">로그인</a>
-        이 필요합니다.
-      </p>
-    </div>
-  </section>
+  <!-- 팔로우 통계 -->
+  <div class="profile-stats">
+    <a th:href="@{'/users/' + ${targetUser.id} + '/followers'}" class="stat-item">
+      <span class="stat-label">팔로워</span>
+      <strong class="stat-number" th:text="${followerCount}">0</strong>
+    </a>
+    <a th:href="@{'/users/' + ${targetUser.id} + '/following'}" class="stat-item">
+      <span class="stat-label">팔로잉</span>
+      <strong class="stat-number" th:text="${followingCount}">0</strong>
+    </a>
+  </div>
 
-  <hr style="margin: 24px 0;">
+  <!-- 최근 리뷰 -->
+  <section class="card profile-reviews">
+    <h2 class="section-title">최근 곡 리뷰</h2>
 
-  <!-- 이 유저가 남긴 최근 리뷰 -->
-  <section>
-    <h2>최근 곡 리뷰</h2>
-
-    <div th:if="${#lists.isEmpty(recentReviews)}">
+    <div th:if="${#lists.isEmpty(recentReviews)}" class="empty-state">
       <p>아직 작성한 리뷰가 없습니다.</p>
     </div>
 
-    <ul th:if="${!#lists.isEmpty(recentReviews)}"
-        style="list-style:none; padding-left:0;">
-      <li th:each="rev : ${recentReviews}"
-          style="border-bottom:1px solid #eee; padding:8px 0;">
-        <div>
-          <a th:href="@{'/songs/' + ${rev.song.id}}">
+    <div th:if="${!#lists.isEmpty(recentReviews)}" class="reviews-list">
+      <div th:each="rev : ${recentReviews}" class="review-item">
+        <div class="review-header">
+          <a th:href="@{'/songs/' + ${rev.song.id}}" class="review-song">
             <strong th:text="${rev.song.title}">곡 제목</strong>
             <span th:text="' - ' + ${rev.song.artist}"> - 아티스트</span>
           </a>
-          <span style="font-size:0.85em; color:#666; margin-left:8px;"
-                th:text="${#temporals.format(rev.createdAt, 'yyyy-MM-dd HH:mm')}">
-          </span>
+          <span class="review-date" th:text="${#temporals.format(rev.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
         </div>
-        <p style="margin:4px 0; white-space:pre-wrap;"
-           th:text="${rev.content}">
-          리뷰 내용
-        </p>
-      </li>
-    </ul>
+
+        <p class="review-content" th:text="${rev.content}">리뷰 내용</p>
+      </div>
+    </div>
   </section>
 
 </main>
