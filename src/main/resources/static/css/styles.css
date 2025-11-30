@@ -1200,3 +1200,27 @@ a {
     justify-content: space-around;
   }
 }
+
+/* styles.css에 추가 */
+
+/* ========== Profile Edit Form ========== */
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ========== Alert ========== */
+.alert-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.alert-error p {
+  color: #dc2626;
+  font-weight: 500;
+  margin: 0;
+}
