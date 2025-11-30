@@ -4,83 +4,74 @@
 <body>
 <div th:replace="~{fragments/header :: navbar}"></div>
 
-<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+<main class="container">
 
-  <section>
-    <h1 th:text="${column.title}">칼럼 제목</h1>
-    <div style="font-size:0.9em; color:#666;">
-      <span th:text="${column.author.nickname}">작성자</span>
-      <span th:text="${#temporals.format(column.createdAt, 'yyyy-MM-dd HH:mm')}"
-            style="margin-left:8px;">
-        2025-01-01 12:00
-      </span>
-    </div>
+  <article class="column-detail">
 
-    <!-- ADMIN이면 삭제 버튼 -->
-    <form th:if="${loginUser != null and loginUser.role.name() == 'ADMIN'}"
-          th:action="@{'/columns/' + ${column.id} + '/delete'}"
-          method="post"
-          style="margin-top:8px;">
-      <button type="submit">칼럼 삭제</button>
-    </form>
+    <!-- 칼럼 헤더 -->
+    <header class="column-header">
+      <h1 class="column-title" th:text="${column.title}">칼럼 제목</h1>
 
-    <article style="margin-top:16px; white-space:pre-wrap;"
-             th:text="${column.content}">
+      <div class="column-meta">
+        <span class="column-author" th:text="${column.author.nickname}">작성자</span>
+        <span class="column-date" th:text="${#temporals.format(column.createdAt, 'yyyy-MM-dd HH:mm')}">
+          2025-01-01 12:00
+        </span>
+      </div>
+
+      <!-- ADMIN 삭제 버튼 -->
+      <form th:if="${loginUser != null and loginUser.role.name() == 'ADMIN'}"
+            th:action="@{'/columns/' + ${column.id} + '/delete'}"
+            method="post"
+            class="column-delete-form">
+        <button type="submit" class="btn-danger">칼럼 삭제</button>
+      </form>
+    </header>
+
+    <!-- 칼럼 본문 -->
+    <div class="column-content" th:text="${column.content}">
       칼럼 내용
-    </article>
-  </section>
+    </div>
+  </article>
 
-  <hr style="margin:24px 0;">
-
-  <!-- 댓글 -->
-  <section>
-    <h2>댓글</h2>
+  <!-- 댓글 섹션 -->
+  <section class="card comments-section">
+    <h2 class="section-title">댓글</h2>
 
     <!-- 댓글 작성 폼 -->
     <div th:if="${loginUser != null}">
       <form th:action="@{'/columns/' + ${column.id} + '/comments'}"
             method="post"
-            style="margin-bottom:12px;">
-        <textarea name="content" rows="3" style="width:100%;"></textarea>
-        <button type="submit" style="margin-top:4px;">댓글 남기기</button>
+            class="comment-form">
+        <textarea name="content" rows="3" class="form-textarea" placeholder="댓글을 입력하세요..."></textarea>
+        <button type="submit" class="btn-primary">댓글 남기기</button>
       </form>
     </div>
-    <div th:if="${loginUser == null}">
-      <p>
-        댓글을 남기려면
-        <a th:href="@{/login}">로그인</a>
-        이 필요합니다.
-      </p>
+
+    <div th:if="${loginUser == null}" class="login-prompt">
+      <p>댓글을 남기려면 <a th:href="@{/login}" class="link-primary">로그인</a>이 필요합니다.</p>
     </div>
 
     <!-- 댓글 목록 -->
-    <div th:if="${#lists.isEmpty(comments)}">
+    <div th:if="${#lists.isEmpty(comments)}" class="empty-state">
       <p>아직 댓글이 없습니다.</p>
     </div>
 
-    <ul th:if="${!#lists.isEmpty(comments)}"
-        style="list-style:none; padding-left:0;">
-      <li th:each="c : ${comments}"
-          style="border-bottom:1px solid #eee; padding:6px 0;">
-        <div style="font-size:0.9em;">
-
-          <a th:href="@{'/users/' + ${c.user.id}}"
-             th:text="${c.user.nickname}">닉네임</a>
+    <div th:if="${!#lists.isEmpty(comments)}" class="comments-list">
+      <div th:each="c : ${comments}" class="comment-item">
+        <div class="comment-header">
+          <a th:href="@{'/users/' + ${c.user.id}}" class="comment-author" th:text="${c.user.nickname}">닉네임</a>
         </div>
-        </div>
-        <p style="margin:4px 0; white-space:pre-wrap;"
-           th:text="${c.content}">
-          댓글 내용
-        </p>
 
-        <!-- 본인 또는 ADMIN일 때 삭제 버튼 -->
+        <p class="comment-content" th:text="${c.content}">댓글 내용</p>
+
         <form th:if="${loginUser != null and (loginUser.id == c.user.id or loginUser.role.name() == 'ADMIN')}"
               th:action="@{'/columns/' + ${column.id} + '/comments/' + ${c.id} + '/delete'}"
               method="post">
-          <button type="submit" style="font-size:0.8em;">삭제</button>
+          <button type="submit" class="btn-danger-small">삭제</button>
         </form>
-      </li>
-    </ul>
+      </div>
+    </div>
   </section>
 
 </main>
