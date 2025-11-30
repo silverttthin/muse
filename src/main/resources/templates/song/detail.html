@@ -3,249 +3,217 @@
 <head th:replace="~{fragments/header :: head('노래 상세')}"></head>
 <body>
 
-<!-- 상단 네비게이션 -->
 <div th:replace="~{fragments/header :: navbar}"></div>
 
-<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+<main class="container">
+
   <!-- 중복 리뷰 작성 시 alert -->
   <script th:if="${reviewAlreadyExists}" th:inline="javascript">
     alert('이 곡에 대해서는 이미 리뷰를 작성했습니다. 리뷰 수정 기능을 사용하세요.');
   </script>
 
-  <!-- 1. 곡 기본 정보 -->
-  <section>
-    <h1 th:text="${song.title}">곡 제목</h1>
+  <!-- 곡 상세 정보 -->
+  <div class="song-detail">
 
-    <div th:if="${song.albumImageUrl != null}">
-      <img th:src="${song.albumImageUrl}" alt="앨범 이미지" style="max-width: 300px; border-radius: 8px; margin-top: 10px;">
+    <!-- 앨범 이미지 & 정보 -->
+    <div class="song-detail-header">
+      <div class="album-cover" th:if="${song.albumImageUrl != null}">
+        <img th:src="${song.albumImageUrl}" alt="앨범 이미지">
+      </div>
+
+      <div class="song-detail-info">
+        <h1 class="song-detail-title" th:text="${song.title}">곡 제목</h1>
+
+        <div class="song-meta">
+          <p class="song-meta-item">
+            <span class="meta-label">아티스트</span>
+            <a th:text="${song.artist}" th:href="${song.artistDetailUrl}" class="meta-link">Artist</a>
+          </p>
+
+          <p class="song-meta-item">
+            <span class="meta-label">장르</span>
+            <span class="genre-badge" th:text="${song.playlistGenre}">Genre</span>
+          </p>
+
+          <p class="song-meta-item">
+            <a th:href="@{'https://open.spotify.com/track/' + ${song.spotifyId}}"
+               target="_blank" class="spotify-link">
+              🎵 Spotify에서 듣기
+            </a>
+          </p>
+        </div>
+
+        <!-- 평균 별점 -->
+        <div class="rating-summary">
+          <div class="rating-score">
+            <span class="score-number" th:text="${#numbers.formatDecimal(ratingSummary.averageScore(), 1, 1)}">0.0</span>
+            <span class="score-stars">⭐</span>
+          </div>
+          <p class="rating-count">
+            <span th:text="${ratingSummary.ratingCount()}">0</span>명이 평가했어요
+          </p>
+        </div>
+      </div>
     </div>
 
-    <p>
-      아티스트:
-      <a th:text="${song.artist}" th:href="${song.artistDetailUrl}">Artist</a>
-    </p>
+    <!-- 내 별점 -->
+    <section class="card my-rating-section">
+      <h2 class="section-title">내 별점</h2>
 
-    <p>
-      장르:
-      <span th:text="${song.playlistGenre}">Genre</span>
-    </p>
+      <!-- 비로그인 -->
+      <div th:if="${session.LOGIN_USER == null}" class="login-prompt">
+        <p>별점을 남기려면 <a th:href="@{/login}" class="link-primary">로그인</a>이 필요합니다.</p>
+      </div>
 
-    <p>
-      Spotify 링크:
-      <a th:href="@{'https://open.spotify.com/track/' + ${song.spotifyId}}"
-         target="_blank">들으러 가기</a>
-    </p>
-  </section>
+      <!-- 로그인 -->
+      <div th:if="${session.LOGIN_USER != null}">
+        <form th:action="@{'/songs/' + ${song.id} + '/rating'}"
+              method="post"
+              class="rating-form">
+          <div class="form-group">
+            <label class="form-label">점수</label>
+            <input type="number"
+                   name="score"
+                   step="0.5"
+                   min="0.5"
+                   max="5.0"
+                   class="form-input"
+                   th:value="${myRating != null} ? ${myRating.score} : 3.0">
+          </div>
+          <button type="submit" class="btn-primary">
+            <span th:text="${myRating != null} ? '수정하기' : '등록하기'">등록하기</span>
+          </button>
+        </form>
 
-  <hr style="margin: 20px 0;">
+        <form th:if="${myRating != null}"
+              th:action="@{'/songs/' + ${song.id} + '/rating/delete'}"
+              method="post"
+              class="delete-form">
+          <button type="submit" class="btn-danger">별점 삭제</button>
+        </form>
+      </div>
+    </section>
 
-  <!-- 2. 평균 별점 / 내 별점 -->
-  <section>
-    <h2>평균 별점</h2>
-    <!-- ratingSummary는 서비스에서 항상 반환되므로 null 아님 -->
-    <p>
-      <span th:text="${#numbers.formatDecimal(ratingSummary.averageScore(), 1, 1)}">0.0</span>
-      점
-      (<span th:text="${ratingSummary.ratingCount()}">0</span>명 평가)
-    </p>
-  </section>
+    <!-- 오디오 특성 -->
+    <section class="card audio-features">
+      <h2 class="section-title">오디오 특성</h2>
+      <div class="audio-features-list">
+        <p class="audio-feature-item" th:text="${audioSummary.energyText}">
+          전체적으로 에너지가 낮은, 잔잔한 곡이에요.
+        </p>
+        <p class="audio-feature-item" th:text="${audioSummary.danceabilityText}">
+          리듬을 타기 좋은 편이에요. 가볍게 몸을 흔들기 좋습니다.
+        </p>
+        <p class="audio-feature-item" th:text="${audioSummary.tempoText}">
+          템포가 빠른 편이에요! 신나고 속도감 있는 곡일 가능성이 커요.
+        </p>
+        <p class="audio-feature-item" th:text="${audioSummary.moodText}">
+          밝고 경쾌한 분위기의 곡이에요!
+        </p>
+      </div>
+    </section>
 
-  <section style="margin-top: 20px;">
-    <h2>내 별점</h2>
+    <!-- 리뷰 -->
+    <section class="card reviews-section">
+      <h2 class="section-title">리뷰</h2>
 
-    <!-- 비로그인 -->
-    <div th:if="${session.LOGIN_USER == null}">
-      <p>
-        별점을 남기려면
-        <a th:href="@{/login}">로그인</a>
-        이 필요합니다.
-      </p>
-    </div>
+      <!-- 비로그인 -->
+      <div th:if="${session.LOGIN_USER == null}" class="login-prompt">
+        <p>리뷰를 남기려면 <a th:href="@{/login}" class="link-primary">로그인</a>이 필요합니다.</p>
+      </div>
 
-    <!-- 로그인 -->
-    <div th:if="${session.LOGIN_USER != null}">
-      <form th:action="@{'/songs/' + ${song.id} + '/rating'}"
-            method="post"
-            style="display:flex; align-items:center; gap:8px; margin-bottom: 8px;">
+      <!-- 로그인 -->
+      <div th:if="${session.LOGIN_USER != null}">
+        <form th:action="@{'/songs/' + ${song.id} + '/reviews'}"
+              method="post"
+              class="review-form">
+          <textarea name="content" rows="3" class="form-textarea" placeholder="이 곡에 대한 생각을 공유해주세요..."></textarea>
+          <button type="submit" class="btn-primary">리뷰 남기기</button>
+        </form>
+      </div>
 
-        <label>
-          점수
-          <input type="number"
-                 name="score"
-                 step="0.5"
-                 min="0.5"
-                 max="5.0"
-                 th:value="${myRating != null} ? ${myRating.score} : 3.0">
-        </label>
+      <!-- 리뷰 목록 -->
+      <div th:if="${reviews == null or #lists.isEmpty(reviews)}" class="empty-state">
+        <p>아직 등록된 리뷰가 없습니다.</p>
+      </div>
 
-        <button type="submit">
-          <span th:text="${myRating != null} ? '수정하기' : '등록하기'">등록하기</span>
-        </button>
-      </form>
+      <div th:if="${reviews != null and !#lists.isEmpty(reviews)}" class="reviews-list">
+        <div th:each="review : ${reviews}" class="review-item">
 
-      <form th:if="${myRating != null}"
-            th:action="@{'/songs/' + ${song.id} + '/rating/delete'}"
-            method="post">
-        <button type="submit">별점 삭제</button>
-      </form>
-    </div>
-  </section>
-
-  <hr style="margin: 20px 0;">
-
-  <!-- 3. 오디오 특성 -->
-  <section>
-    <h2>오디오 특성</h2>
-
-    <!-- 자연어 요약만 표시 -->
-    <div style="margin-top:8px; line-height:1.5;">
-      <p th:text="${audioSummary.energyText}">
-        전체적으로 에너지가 낮은, 잔잔한 곡이에요.
-      </p>
-      <p th:text="${audioSummary.danceabilityText}">
-        리듬을 타기 좋은 편이에요. 가볍게 몸을 흔들기 좋습니다.
-      </p>
-      <p th:text="${audioSummary.tempoText}">
-        템포가 빠른 편이에요! 신나고 속도감 있는 곡일 가능성이 커요.
-      </p>
-      <p th:text="${audioSummary.moodText}">
-        밝고 경쾌한 분위기의 곡이에요!
-      </p>
-    </div>
-  </section>
-
-  <hr style="margin: 20px 0;">
-
-  <!-- 4. 리뷰 -->
-  <section>
-    <h2>리뷰</h2>
-
-    <!-- 비로그인 -->
-    <div th:if="${session.LOGIN_USER == null}">
-      <p>
-        리뷰를 남기려면
-        <a th:href="@{/login}">로그인</a>
-        이 필요합니다.
-      </p>
-    </div>
-
-    <!-- 로그인 -->
-    <div th:if="${session.LOGIN_USER != null}">
-      <form th:action="@{'/songs/' + ${song.id} + '/reviews'}"
-            method="post"
-            style="display:flex; flex-direction:column; gap:8px; margin-bottom: 20px;">
-
-        <label>
-          내용
-          <textarea name="content" rows="3" style="width:100%;"></textarea>
-        </label>
-
-        <button type="submit">리뷰 남기기</button>
-      </form>
-    </div>
-
-    <!-- 리뷰 목록 -->
-    <div th:if="${reviews == null or #lists.isEmpty(reviews)}">
-      <p>아직 등록된 리뷰가 없습니다.</p>
-    </div>
-
-    <div th:if="${reviews != null and !#lists.isEmpty(reviews)}">
-      <ul style="list-style:none; padding:0;">
-        <li th:each="review : ${reviews}"
-            style="border:1px solid #ddd; border-radius:4px; padding:8px 10px; margin-bottom:8px;">
-
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <a th:href="@{'/users/' + ${review.user.id}}">
+          <!-- 리뷰 헤더 -->
+          <div class="review-header">
+            <div class="review-author">
+              <a th:href="@{'/users/' + ${review.user.id}}" class="author-name">
                 <strong th:text="${review.user.nickname}">닉네임</strong>
               </a>
-              <span style="font-size: 0.85em; color:#666;"
-                    th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">
-                                2025-01-01 12:00
-                            </span>
+              <span class="review-date" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">
+                2025-01-01 12:00
+              </span>
             </div>
           </div>
 
-          <p style="margin-top:6px; white-space:pre-wrap;"
-             th:text="${review.content}">
-            리뷰 내용
-          </p>
+          <!-- 리뷰 내용 -->
+          <p class="review-content" th:text="${review.content}">리뷰 내용</p>
 
-          <!-- 본인 글일 때만 수정/삭제 버튼 -->
+          <!-- 본인 글일 때만 수정/삭제 -->
           <div th:if="${session.LOGIN_USER != null and session.LOGIN_USER.id == review.user.id}"
-               style="margin-top:4px; display:flex; gap:4px;">
-
-            <!-- 간단한 inline 수정 폼 -->
+               class="review-actions">
             <form th:action="@{'/songs/' + ${song.id} + '/reviews/' + ${review.id} + '/edit'}"
                   method="post"
-                  style="flex:1;">
-                            <textarea name="content" rows="2" style="width:100%;"
-                                      th:text="${review.content}"></textarea>
-              <button type="submit" style="margin-top:4px;">수정</button>
+                  class="review-edit-form">
+              <textarea name="content" rows="2" class="form-textarea" th:text="${review.content}"></textarea>
+              <button type="submit" class="btn-secondary">수정</button>
             </form>
 
             <form th:action="@{'/songs/' + ${song.id} + '/reviews/' + ${review.id} + '/delete'}"
-                  method="post"
-                  style="align-self:flex-start;">
-              <button type="submit">삭제</button>
+                  method="post">
+              <button type="submit" class="btn-danger-small">삭제</button>
             </form>
           </div>
 
-          <!-- ===== 댓글 영역 시작 ===== -->
-          <div style="margin-top:8px; padding-left:12px; border-top:1px solid #eee; padding-top:6px;"
-               th:with="comments=${commentsByReview[review.id]}">
+          <!-- 댓글 영역 -->
+          <div class="comments-section" th:with="comments=${commentsByReview[review.id]}">
 
-            <!-- 댓글 작성 폼 (로그인한 경우만) -->
+            <!-- 댓글 작성 폼 -->
             <div th:if="${session.LOGIN_USER != null}">
               <form th:action="@{'/songs/' + ${song.id} + '/reviews/' + ${review.id} + '/comments'}"
                     method="post"
-                    style="margin-bottom:6px;">
-                <textarea name="content" rows="2" style="width:100%;"></textarea>
-                <button type="submit" style="margin-top:4px;">댓글 달기</button>
+                    class="comment-form">
+                <textarea name="content" rows="2" class="form-textarea" placeholder="댓글을 입력하세요..."></textarea>
+                <button type="submit" class="btn-secondary">댓글 달기</button>
               </form>
             </div>
 
             <!-- 댓글 목록 -->
-            <div th:if="${comments == null or #lists.isEmpty(comments)}">
-              <p style="font-size:0.85em; color:#777; margin:2px 0;">아직 댓글이 없습니다.</p>
+            <div th:if="${comments == null or #lists.isEmpty(comments)}" class="comments-empty">
+              <p>아직 댓글이 없습니다.</p>
             </div>
 
-            <ul th:if="${comments != null and !#lists.isEmpty(comments)}"
-                style="list-style:none; padding-left:0; margin:4px 0 0 0;">
-              <li th:each="comment : ${comments}"
-                  style="border-top:1px solid #f0f0f0; padding-top:4px; margin-top:4px;">
-
-                <div style="font-size:0.9em;">
-                  <a th:href="@{'/users/' + ${comment.writer.id}}">
+            <div th:if="${comments != null and !#lists.isEmpty(comments)}" class="comments-list">
+              <div th:each="comment : ${comments}" class="comment-item">
+                <div class="comment-header">
+                  <a th:href="@{'/users/' + ${comment.writer.id}}" class="comment-author">
                     <strong th:text="${comment.writer.nickname}">댓글작성자</strong>
                   </a>
-                  <span style="font-size:0.8em; color:#666;"
-                        th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">
-              </span>
+                  <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
                 </div>
 
-                <p style="margin:3px 0; white-space:pre-wrap;"
-                   th:text="${comment.content}">
-                  댓글 내용
-                </p>
+                <p class="comment-content" th:text="${comment.content}">댓글 내용</p>
 
-                <!-- 내 댓글이면 삭제 버튼 -->
                 <form th:if="${session.LOGIN_USER != null and session.LOGIN_USER.id == comment.writer.id}"
                       th:action="@{'/songs/' + ${song.id} + '/reviews/' + ${review.id} + '/comments/' + ${comment.id} + '/delete'}"
-                      method="post"
-                      style="margin-top:2px;">
-                  <button type="submit" style="font-size:0.8em;">댓글 삭제</button>
+                      method="post">
+                  <button type="submit" class="btn-danger-small">댓글 삭제</button>
                 </form>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
-          <!-- ===== 댓글 영역 끝 ===== -->
 
+        </div>
+      </div>
+    </section>
 
-        </li>
-      </ul>
-    </div>
-  </section>
+  </div>
 
 </main>
 
