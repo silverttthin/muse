@@ -372,3 +372,89 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* styles.css에 추가 */
+
+/* ========== Page Header ========== */
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ========== Song List ========== */
+.song-list {
+  background-color: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.song-list-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.song-list-item:last-child {
+  border-bottom: none;
+}
+
+.song-list-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  transition: background-color 0.2s;
+}
+
+.song-list-link:hover {
+  background-color: var(--bg);
+}
+
+.song-list-info {
+  flex: 1;
+}
+
+.song-list-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.song-list-artist {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.song-list-genre {
+  margin-left: 16px;
+}
+
+.genre-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: var(--bg);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 16px;
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .song-list-link {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .song-list-genre {
+    margin-left: 0;
+    margin-top: 12px;
+  }
+}

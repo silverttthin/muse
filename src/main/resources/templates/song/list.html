@@ -1,40 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/header :: head('노래 목록')}">
-</html>
-
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>노래 목록</title>
-</head>
+<head th:replace="~{fragments/header :: head('노래 목록')}"></head>
 <body>
 
 <div th:replace="~{fragments/header :: navbar}"></div>
 
-<main style="max-width: 900px; margin: 40px auto;">
-  <h1>노래 목록</h1>
+<main class="container">
+  <div class="page-header">
+    <h1 class="page-title">노래 목록</h1>
+  </div>
 
-  <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
-    <thead>
-    <tr>
-      <th style="border-bottom: 1px solid #ddd; text-align:left;">제목</th>
-      <th style="border-bottom: 1px solid #ddd; text-align:left;">아티스트</th>
-      <th style="border-bottom: 1px solid #ddd; text-align:left;">장르</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="song : ${songs}">
-      <td style="padding: 6px 4px;">
-        <a th:href="@{'/songs/' + ${song.id}}"
-           th:text="${song.title}">곡 제목</a>
-      </td>
-      <td style="padding: 6px 4px;" th:text="${song.artist}">아티스트</td>
-      <td style="padding: 6px 4px;" th:text="${song.playlistGenre}">장르</td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="song-list">
+    <div class="song-list-item" th:each="song : ${songs}">
+      <a th:href="@{'/songs/' + ${song.id}}" class="song-list-link">
+        <div class="song-list-info">
+          <h3 class="song-list-title" th:text="${song.title}">곡 제목</h3>
+          <p class="song-list-artist" th:text="${song.artist}">아티스트</p>
+        </div>
+        <div class="song-list-genre">
+          <span class="genre-badge" th:text="${song.playlistGenre}">장르</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
 </main>
 
 </body>
