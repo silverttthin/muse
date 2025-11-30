@@ -1550,3 +1550,124 @@ a {
     font-size: 24px;
   }
 }
+
+/* styles.css에 추가 */
+
+/* ========== Admin Info ========== */
+.admin-info {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+/* ========== Admin Table ========== */
+.admin-table-container {
+  background-color: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table thead {
+  background-color: var(--bg);
+}
+
+.admin-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background-color: var(--bg);
+}
+
+.admin-user-link {
+  color: var(--primary);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.admin-user-link:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* ========== Admin Form ========== */
+.admin-form {
+  display: contents;
+}
+
+.admin-select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.admin-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.btn-admin {
+  padding: 6px 16px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-admin:hover {
+  background-color: var(--primary-dark);
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .admin-table-container {
+    border-radius: 8px;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 12px 8px;
+    font-size: 14px;
+  }
+
+  .admin-select {
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+
+  .btn-admin {
+    font-size: 13px;
+    padding: 4px 12px;
+  }
+}
