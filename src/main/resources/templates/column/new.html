@@ -4,25 +4,31 @@
 <body>
 <div th:replace="~{fragments/header :: navbar}"></div>
 
-<main style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+<main class="container">
 
-  <h1>새 칼럼 작성</h1>
+  <div class="page-header">
+    <h1 class="page-title">새 칼럼 작성</h1>
+  </div>
 
-  <form th:action="@{/columns}" method="post"
-        style="display:flex; flex-direction:column; gap:12px;">
+  <div class="card">
+    <form th:action="@{/columns}" method="post" class="column-form">
 
-    <label>
-      제목
-      <input type="text" name="title" style="width:100%; padding:4px 6px;">
-    </label>
+      <div class="form-group">
+        <label class="form-label">제목</label>
+        <input type="text" name="title" class="form-input-full" placeholder="칼럼 제목을 입력하세요" required>
+      </div>
 
-    <label>
-      내용
-      <textarea name="content" rows="10" style="width:100%;"></textarea>
-    </label>
+      <div class="form-group">
+        <label class="form-label">내용</label>
+        <textarea name="content" rows="15" class="form-textarea" placeholder="칼럼 내용을 작성하세요" required></textarea>
+      </div>
 
-    <button type="submit">등록</button>
-  </form>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">등록</button>
+        <a th:href="@{/columns}" class="btn-secondary">취소</a>
+      </div>
+    </form>
+  </div>
 
 </main>
 </body>
