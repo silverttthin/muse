@@ -4,6 +4,7 @@ package org.siwoong.muse.column;
 import jakarta.persistence.*;
 import lombok.*;
 
+import org.siwoong.muse.common.BaseEntity;
 import org.siwoong.muse.user.User;
 
 @Entity
@@ -13,7 +14,7 @@ import org.siwoong.muse.user.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ColumnComment {
+public class ColumnComment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

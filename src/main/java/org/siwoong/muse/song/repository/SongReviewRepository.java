@@ -17,5 +17,8 @@ public interface SongReviewRepository extends JpaRepository<SongReview, Long> {
 
     List<SongReview> findTop20ByUser_IdAndDeletedFalseOrderByCreatedAtDesc(Long userId);
 
+    List<SongReview> findByHasProfanityTrueOrderByCreatedAtDesc();
+
+
 
 }

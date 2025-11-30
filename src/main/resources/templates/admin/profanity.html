@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('관리자 - 욕설 모니터링')}"></head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main class="container">
+
+  <div class="page-header">
+    <h1 class="page-title">비속어 모니터링</h1>
+    <p class="admin-info">
+      <span th:text="${loginUser.nickname}">관리자</span> 님으로 로그인됨
+    </p>
+  </div>
+
+  <div class="admin-table-container">
+
+    <div th:if="${#lists.isEmpty(items)}" class="empty-state">
+      <p>욕설이 감지된 컨텐츠가 없습니다.</p>
+    </div>
+
+    <table th:if="${!#lists.isEmpty(items)}" class="admin-table">
+      <thead>
+      <tr>
+        <th>유형</th>
+        <th>ID</th>
+        <th>작성자</th>
+        <th>내용</th>
+        <th>작성일시</th>
+        <th>원문</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="item : ${items}">
+        <td>
+          <span th:switch="${item.type}" class="content-type-badge">
+            <span th:case="${T(org.siwoong.muse.admin.dto.ProfanityItemView.ContentType).SONG_REVIEW}">
+              곡 리뷰
+            </span>
+            <span th:case="${T(org.siwoong.muse.admin.dto.ProfanityItemView.ContentType).SONG_REVIEW_COMMENT}">
+              리뷰 댓글
+            </span>
+            <span th:case="${T(org.siwoong.muse.admin.dto.ProfanityItemView.ContentType).COLUMN_COMMENT}">
+              칼럼 댓글
+            </span>
+            <span th:case="*">기타</span>
+          </span>
+        </td>
+        <td class="id-cell" th:text="${item.id}">1</td>
+        <td>
+          <span class="author-name" th:text="${item.authorNickname}">닉네임</span>
+        </td>
+        <td>
+          <span class="content-snippet" th:text="${item.snippet}">내용 일부...</span>
+        </td>
+        <td class="date-cell" th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm')}">
+          2025-01-01 12:00
+        </td>
+        <td>
+          <a th:href="${item.targetLink}" target="_blank" class="link-button">
+            원문 보기 →
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+</body>
+</html>

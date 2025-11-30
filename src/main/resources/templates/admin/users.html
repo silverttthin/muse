@@ -7,10 +7,13 @@
 <main class="container">
 
   <div class="page-header">
-    <h1 class="page-title">관리자 - 사용자 관리</h1>
-    <p class="admin-info">
-      <span th:text="${loginUser.nickname}">관리자</span> 님으로 로그인됨
-    </p>
+    <div>
+      <h1 class="page-title">관리자 - 사용자 관리</h1>
+      <p class="admin-info">
+        <span th:text="${loginUser.nickname}">관리자</span> 님으로 로그인됨
+      </p>
+    </div>
+    <a th:href="@{/admin/profanity}" class="btn-primary">비속어 모니터링</a>
   </div>
 
   <div class="admin-table-container">

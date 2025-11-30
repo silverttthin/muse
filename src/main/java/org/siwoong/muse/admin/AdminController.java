@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final UserService userService;
+    private final ModerationService moderationService;
 
     private static final String LOGIN_USER_SESSION_KEY = "LOGIN_USER";
 
@@ -81,5 +82,18 @@ public class AdminController {
         userService.updateUserRoleAndStatus(id, newRole, newStatus);
 
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/profanity")
+    public String profanityList(HttpSession session, Model model) {
+        UserDto.Response admin = getAdminOrRedirect(session);
+        if (admin == null) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("loginUser", admin);
+        model.addAttribute("items", moderationService.getAllFlaggedContent());
+
+        return "admin/profanity";
     }
 }

@@ -1671,3 +1671,79 @@ a {
     padding: 4px 12px;
   }
 }
+
+/* styles.css에 추가 */
+
+/* ========== Content Type Badge ========== */
+.content-type-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* ========== Table Cell Styles ========== */
+.id-cell {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.author-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.content-snippet {
+  display: block;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.date-cell {
+  color: var(--text-secondary);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* ========== Link Button ========== */
+.link-button {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: var(--primary);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.link-button:hover {
+  background-color: var(--primary-dark);
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .content-snippet {
+    max-width: 150px;
+  }
+
+  .content-type-badge {
+    font-size: 12px;
+    padding: 3px 8px;
+  }
+
+  .link-button {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}

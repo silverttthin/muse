@@ -12,4 +12,7 @@ public interface SongReviewCommentRepository extends JpaRepository<SongReviewCom
         List<SongReview> reviews);
 
     Optional<SongReviewComment> findByIdAndDeletedFalse(Long id);
+
+    List<SongReviewComment> findByHasProfanityTrueOrderByCreatedAtDesc();
+
 }

@@ -10,4 +10,7 @@ public interface ColumnCommentRepository extends JpaRepository<ColumnComment, Lo
     List<ColumnComment> findByColumnPostAndDeletedFalseOrderByIdAsc(ColumnPost columnPost);
 
     Optional<ColumnComment> findByIdAndDeletedFalse(Long id);
+
+    List<ColumnComment> findByHasProfanityTrueOrderByCreatedAtDesc();
+
 }
