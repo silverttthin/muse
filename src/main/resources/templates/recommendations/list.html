@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-
-<head>
-  <title>개인화 추천</title>
-</head>
+<head th:replace="~{fragments/header :: head('개인화 추천')}"></head>
 <body>
-<h1>나를 위한 추천 곡</h1>
+<div th:replace="~{fragments/header :: navbar}"></div>
 
-<div th:if="${#lists.isEmpty(recommendations)}">
-  아직 추천할 곡이 없어요. 먼저 몇 곡에 별점을 남겨보세요!
-</div>
+<main class="container">
 
-<ul th:if="${!#lists.isEmpty(recommendations)}">
-  <li th:each="item : ${recommendations}">
-    <span th:text="${item.title}">곡 제목</span>
-    -
-    <span th:text="${item.artist}">아티스트</span>
-    (<span th:text="${#numbers.formatDecimal(item.score, 1, 3)}">0.0</span>)
-  </li>
-</ul>
+  <div class="page-header">
+    <h1 class="page-title">나를 위한 추천 곡</h1>
+  </div>
+
+  <div th:if="${#lists.isEmpty(recommendations)}" class="card cold-start-card">
+    <div class="card-icon">🎼</div>
+    <h2 class="card-title">아직 추천할 곡이 없어요</h2>
+    <p class="card-text">먼저 몇 곡에 별점을 남겨보세요!</p>
+    <a th:href="@{/songs}" class="btn-primary">곡 리스트 보러가기</a>
+  </div>
+
+  <div th:if="${!#lists.isEmpty(recommendations)}" class="recommendations-grid">
+    <div th:each="item : ${recommendations}" class="recommendation-card">
+      <a th:href="@{'/songs/' + ${item.songId}}" class="recommendation-link">
+        <div class="recommendation-info">
+          <h3 class="recommendation-title" th:text="${item.title}">곡 제목</h3>
+          <p class="recommendation-artist" th:text="${item.artist}">아티스트</p>
+        </div>
+        <div class="recommendation-score">
+          <span class="score-badge" th:text="${#numbers.formatDecimal(item.score, 1, 2)}">0.0</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</main>
 </body>
 </html>
