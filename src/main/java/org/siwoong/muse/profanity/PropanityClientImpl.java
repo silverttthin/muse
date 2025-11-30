@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PropanityClientImpl implements PropanityClient {
+public class PropanityClientImpl implements ProfanityClient {
 
     private final RestTemplate restTemplate;
 

@@ -2,6 +2,7 @@ package org.siwoong.muse.column;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.siwoong.muse.profanity.ProfanityClient;
 import org.siwoong.muse.user.User;
 import org.siwoong.muse.user.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ public class ColumnCommentService {
     private final ColumnCommentRepository columnCommentRepository;
     private final ColumnPostRepository columnPostRepository;
     private final UserRepository userRepository;
+    private final ProfanityClient profanityClient;
 
     public List<ColumnComment> getCommentsForColumn(Long columnId) {
         ColumnPost post = columnPostRepository.findByIdAndDeletedFalse(columnId)
@@ -43,11 +45,15 @@ public class ColumnCommentService {
                 HttpStatus.NOT_FOUND, "칼럼을 찾을 수 없습니다."
             ));
 
+        // 욕설 필터링
+        Boolean hasProfanity = profanityClient.isProfanity(content);
+
         ColumnComment comment = ColumnComment.builder()
             .user(user)
             .columnPost(post)
             .content(content.trim())
             .deleted(false)
+            .hasProfanity(hasProfanity)
             .build();
 
         columnCommentRepository.save(comment);

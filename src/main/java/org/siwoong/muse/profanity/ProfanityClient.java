@@ -1,6 +1,6 @@
 package org.siwoong.muse.profanity;
 
-public interface PropanityClient {
+public interface ProfanityClient {
     Boolean isProfanity(String text);
 }
 

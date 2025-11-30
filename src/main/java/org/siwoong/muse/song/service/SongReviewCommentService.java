@@ -2,6 +2,7 @@ package org.siwoong.muse.song.service;
 
 import java.util.*;
 import lombok.RequiredArgsConstructor;
+import org.siwoong.muse.profanity.ProfanityClient;
 import org.siwoong.muse.song.SongReview;
 import org.siwoong.muse.song.SongReviewComment;
 import org.siwoong.muse.song.repository.SongReviewCommentRepository;
@@ -21,6 +22,7 @@ public class SongReviewCommentService {
     private final SongReviewCommentRepository commentRepository;
     private final SongReviewRepository songReviewRepository;
     private final UserRepository userRepository;
+    private final ProfanityClient profanityClient;
 
     /**
      * 리뷰 리스트에 대해 댓글들을 한 번에 조회해서
@@ -54,11 +56,16 @@ public class SongReviewCommentService {
         SongReview review = songReviewRepository.findByIdAndDeletedFalse(reviewId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "리뷰를 찾을 수 없습니다."));
 
+        // 욕설 필터링
+        Boolean hasProfanity = profanityClient.isProfanity(content);
+
+
         SongReviewComment comment = SongReviewComment.builder()
             .writer(writer)
             .review(review)
             .content(content.trim())
             .deleted(false)
+            .hasProfanity(hasProfanity)
             .build();
 
         commentRepository.save(comment);

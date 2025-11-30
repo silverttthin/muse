@@ -2,6 +2,7 @@ package org.siwoong.muse.song.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.siwoong.muse.profanity.ProfanityClient;
 import org.siwoong.muse.song.Song;
 import org.siwoong.muse.song.SongReview;
 import org.siwoong.muse.song.repository.SongRepository;
@@ -21,6 +22,7 @@ public class SongReviewService {
     private final SongReviewRepository songReviewRepository;
     private final UserRepository userRepository;
     private final SongRepository songRepository;
+    private final ProfanityClient profanityClient;
 
     public List<SongReview> getReviewsForSong(Long songId) {
         return songReviewRepository.findBySongIdAndDeletedFalseOrderByCreatedAtDesc(songId);
@@ -46,11 +48,15 @@ public class SongReviewService {
         Song song = songRepository.findById(songId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "곡을 찾을 수 없습니다."));
 
+        // 욕설 필터링
+        Boolean hasProfanity = profanityClient.isProfanity(content);
+
         SongReview review = SongReview.builder()
             .user(user)
             .song(song)
             .content(content.trim())
             .deleted(false)
+            .hasProfanity(hasProfanity)
             .build();
 
         songReviewRepository.save(review);
@@ -68,6 +74,10 @@ public class SongReviewService {
         if (!review.getUser().getId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "본인이 작성한 리뷰만 수정할 수 있습니다.");
         }
+
+        // 욕설 필터링
+        Boolean hasProfanity = profanityClient.isProfanity(newContent);
+        review.setHasProfanity(hasProfanity);
 
         review.updateContent(newContent.trim());
     }
