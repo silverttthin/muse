@@ -859,3 +859,95 @@ a {
     flex-direction: column;
   }
 }
+
+/* styles.css에 추가 */
+
+/* ========== Page Header with Action ========== */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+/* ========== Columns List ========== */
+.columns-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.column-card {
+  background-color: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.column-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.column-card-link {
+  display: block;
+  padding: 24px;
+}
+
+.column-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.column-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.column-author {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.column-date {
+  color: var(--text-secondary);
+}
+
+.column-date::before {
+  content: "•";
+  margin-right: 12px;
+  color: var(--border);
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .column-card-link {
+    padding: 20px;
+  }
+
+  .column-card-title {
+    font-size: 18px;
+  }
+
+  .column-card-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .column-date::before {
+    display: none;
+  }
+}
