@@ -1500,3 +1500,53 @@ a {
     font-size: 20px;
   }
 }
+
+/* styles.css에 추가 */
+
+/* ========== Auth Container ========== */
+.auth-container {
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: var(--shadow);
+  margin-top: 40px;
+}
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* ========== Auth Form ========== */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.btn-full {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 24px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 24px;
+  }
+
+  .auth-title {
+    font-size: 24px;
+  }
+}
