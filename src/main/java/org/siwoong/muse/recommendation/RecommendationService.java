@@ -82,7 +82,7 @@ public class RecommendationService {
         Collections.shuffle(top50);
 
         // 3) 상위 10개만 잘라서 사용
-        int size = Math.min(10, top50.size());
+        int size = Math.min(9, top50.size());
         return top50.subList(0, size);
     }
 

@@ -51,6 +51,12 @@
       <div class="song-grid">
         <div th:each="item : ${recommendations}" class="song-card">
           <a th:href="@{'/songs/' + ${item.songId}}" class="song-card-link">
+            <div class="song-card-image" th:if="${item.albumImageUrl != null}">
+              <img th:src="${item.albumImageUrl}" alt="앨범 커버">
+            </div>
+            <div class="song-card-image placeholder" th:if="${item.albumImageUrl == null}">
+              <span>🎵</span>
+            </div>
             <div class="song-info">
               <h3 class="song-title" th:text="${item.title}">곡 제목</h3>
               <p class="song-artist" th:text="${item.artist}">아티스트</p>
