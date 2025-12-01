@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('404 - 페이지를 찾을 수 없습니다')}"></head>
+<body>
+
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main class="container">
+
+  <div class="error-container">
+    <div class="error-icon">🎵</div>
+    <h1 class="error-title">404</h1>
+    <h2 class="error-subtitle">페이지를 찾을 수 없습니다</h2>
+    <p class="error-message">
+      요청하신 페이지가 존재하지 않거나 이동되었습니다.<br>
+      주소를 다시 확인해주세요.
+    </p>
+    <div class="error-actions">
+      <a th:href="@{/}" class="btn-primary">홈으로 돌아가기</a>
+      <a th:href="@{/songs}" class="btn-secondary">노래 목록 보기</a>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

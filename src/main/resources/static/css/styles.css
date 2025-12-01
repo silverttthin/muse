@@ -1747,3 +1747,79 @@ a {
     padding: 4px 10px;
   }
 }
+
+/* styles.css에 추가 */
+
+/* ========== Error Page ========== */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px;
+  min-height: 60vh;
+}
+
+.error-icon {
+  font-size: 80px;
+  margin-bottom: 24px;
+  opacity: 0.5;
+}
+
+.error-title {
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.error-subtitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.error-message {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 32px;
+  max-width: 500px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 16px;
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .error-container {
+    padding: 60px 16px;
+  }
+
+  .error-icon {
+    font-size: 60px;
+  }
+
+  .error-title {
+    font-size: 56px;
+  }
+
+  .error-subtitle {
+    font-size: 22px;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .error-actions a {
+    width: 100%;
+    text-align: center;
+  }
+}
