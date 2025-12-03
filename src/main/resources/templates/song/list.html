@@ -10,6 +10,30 @@
     <h1 class="page-title">노래 목록</h1>
   </div>
 
+  <!-- 필터 / 정렬 폼 -->
+  <form method="get" class="filter-form">
+    <div class="filter-group">
+      <label class="filter-label">장르</label>
+      <select name="genre" class="filter-select">
+        <option value="" th:selected="${genre == null or #strings.isEmpty(genre)}">전체</option>
+        <option value="k-pop" th:selected="${genre == 'k-pop'}">K-POP</option>
+        <option value="pop" th:selected="${genre == 'pop'}">POP</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label">정렬</label>
+      <select name="sort" class="filter-select">
+        <option value="latest" th:selected="${sort == 'latest'}">기본 순서</option>
+        <option value="rating" th:selected="${sort == 'rating'}">평점 높은 순</option>
+        <option value="reviewCount" th:selected="${sort == 'reviewCount'}">리뷰 많은 순</option>
+      </select>
+    </div>
+
+    <input type="hidden" name="page" th:value="${currentPage}">
+    <button type="submit" class="btn-primary filter-submit">적용</button>
+  </form>
+
   <div class="song-list">
     <div class="song-list-item" th:each="song : ${songs}">
       <a th:href="@{'/songs/' + ${song.id}}" class="song-list-link">
@@ -23,6 +47,58 @@
       </a>
     </div>
   </div>
+
+  <!-- 페이지네이션 -->
+  <nav class="pagination" th:if="${totalPages > 1}">
+
+    <!-- 이전 페이지 -->
+    <a th:if="${currentPage > 0}"
+       th:href="@{/songs(page=${currentPage - 1}, genre=${genre}, sort=${sort})}"
+       class="pagination-link">
+      ← 이전
+    </a>
+    <span th:if="${currentPage == 0}" class="pagination-link disabled">
+      ← 이전
+    </span>
+
+    <!-- 현재 페이지 / 전체 페이지 표시 -->
+    <span class="pagination-status">
+      페이지
+      <span th:text="${currentPage + 1}">1</span>
+      /
+      <span th:text="${totalPages}">10</span>
+    </span>
+
+    <!-- 페이지 이동 입력폼 -->
+    <form method="get" class="pagination-jump-form">
+      <!-- 장르 / 정렬 유지 -->
+      <input type="hidden" name="genre" th:value="${genre}">
+      <input type="hidden" name="sort" th:value="${sort}">
+
+      <label>
+        이동:
+        <input type="number"
+               name="pageNum"
+               min="1"
+               th:max="${totalPages}"
+               th:value="${currentPage + 1}"
+               class="pagination-input">
+      </label>
+      <button type="submit" class="btn-secondary">Go</button>
+    </form>
+
+    <!-- 다음 페이지 -->
+    <a th:if="${currentPage < totalPages - 1}"
+       th:href="@{/songs(page=${currentPage + 1}, genre=${genre}, sort=${sort})}"
+       class="pagination-link">
+      다음 →
+    </a>
+    <span th:if="${currentPage >= totalPages - 1}" class="pagination-link disabled">
+      다음 →
+    </span>
+
+  </nav>
+
 
 </main>
 

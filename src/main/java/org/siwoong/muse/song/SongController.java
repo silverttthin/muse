@@ -7,6 +7,7 @@ import org.siwoong.muse.song.service.SongReviewService;
 import org.siwoong.muse.song.service.SongService;
 import org.siwoong.muse.user.Status;
 import org.siwoong.muse.user.UserDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,10 +27,31 @@ public class SongController {
     public static final String LOGIN_USER_SESSION_KEY = "LOGIN_USER";
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("songs", songService.getAllSongs());
+    public String list(
+        @RequestParam(name = "page", defaultValue = "0") int page,
+        @RequestParam(name = "size", defaultValue = "20") int size,
+        @RequestParam(name = "genre", required = false) String genre,
+        @RequestParam(name = "sort", defaultValue = "latest") String sortKey,
+        @RequestParam(name = "pageNum", required = false) Integer pageNum,  // 👈 추가
+        Model model
+    ) {
+        // 사용자가 입력폼에서 pageNum(1-based)을 줬다면 우선 적용
+        if (pageNum != null) {
+            page = Math.max(pageNum - 1, 0);  // 최소 0
+        }
+
+        Page<Song> songPage = songService.getSongs(genre, sortKey, page, size);
+
+        model.addAttribute("songsPage", songPage);
+        model.addAttribute("songs", songPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", songPage.getTotalPages());
+        model.addAttribute("genre", genre);
+        model.addAttribute("sort", sortKey);
+
         return "song/list";
     }
+
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id,

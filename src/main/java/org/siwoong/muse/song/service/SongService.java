@@ -1,6 +1,7 @@
 package org.siwoong.muse.song.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.siwoong.muse.song.Song;
 import org.siwoong.muse.song.SongRating;
 import org.siwoong.muse.song.repository.SongRepository;
@@ -8,6 +9,10 @@ import org.siwoong.muse.song.repository.SongRatingRepository;
 
 import org.siwoong.muse.user.User;
 import org.siwoong.muse.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +24,37 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class SongService {
 
     private final SongRepository songRepository;
     private final SongRatingRepository songRatingRepository;
     private final UserRepository userRepository;
 
-    public List<Song> getAllSongs() {
-        return songRepository.findTop50ByOrderByIdAsc();
+    public Page<Song> getSongs(String genre, String sortKey, int page, int size) {
+        boolean hasGenre = (genre != null && !genre.isBlank());
+
+        log.info("hasGenre is {} and genre is {}", hasGenre, genre);
+
+        // sortKey: latest / rating / reviewCount
+        if ("rating".equals(sortKey)) {
+            Pageable pageable = PageRequest.of(page, size);
+            return hasGenre
+                ? songRepository.findByPlaylistGenreOrderByAverageRatingDesc(genre, pageable)
+                : songRepository.findAllOrderByAverageRatingDesc(pageable);
+        } else if ("reviewCount".equals(sortKey)) {
+            Pageable pageable = PageRequest.of(page, size);
+            return hasGenre
+                ? songRepository.findByPlaylistGenreOrderByReviewCountDesc(genre, pageable)
+                : songRepository.findAllOrderByReviewCountDesc(pageable);
+        } else {
+            // 기본: id 기준 오름차순 (혹은 최신순)
+            Sort sort = Sort.by(Sort.Direction.ASC, "id");
+            Pageable pageable = PageRequest.of(page, size, sort);
+            return hasGenre
+                ? songRepository.findByPlaylistGenre(genre, pageable)
+                : songRepository.findAll(pageable);
+        }
     }
 
     public Song getSong(Long id) {

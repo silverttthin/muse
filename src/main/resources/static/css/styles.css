@@ -1847,3 +1847,201 @@ a {
     text-align: center;
   }
 }
+
+/* styles.css 전체 Filter Form과 Pagination 부분 */
+
+/* ========== Filter Form ========== */
+.filter-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 20px;
+  background-color: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 150px;
+}
+
+.filter-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.filter-select {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.filter-submit {
+  align-self: flex-end;
+}
+
+/* ========== Pagination ========== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+  padding: 20px 0;
+}
+
+.pagination-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.pagination-link:hover:not(.disabled) {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.pagination-link.disabled {
+  color: var(--text-secondary);
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 페이지 상태 표시 */
+.pagination-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 16px;
+  background-color: var(--bg);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pagination-status span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* 페이지 이동 폼 */
+.pagination-jump-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.pagination-jump-form label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.pagination-input {
+  width: 60px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.pagination-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.pagination-jump-form .btn-secondary {
+  padding: 6px 12px;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 768px) {
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  .filter-group {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-submit {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px 0;
+  }
+
+  .pagination-link {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .pagination-status {
+    padding: 8px 12px;
+    font-size: 13px;
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pagination-jump-form {
+    width: 100%;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .pagination-input {
+    width: 50px;
+  }
+}
