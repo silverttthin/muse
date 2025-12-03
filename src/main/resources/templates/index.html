@@ -42,7 +42,7 @@
     </div>
 
     <!-- 추천 가능 -->
-    <div th:if="${!coldStart}" class="recommendations-section">
+    <div th:if="${coldStart != null ? !coldStart : true}" class="recommendations-section">
       <div class="section-header">
         <h2 class="section-title">나를 위한 추천 곡</h2>
         <a th:href="@{/recommendations}" class="link-more">추천 더 보기 →</a>
