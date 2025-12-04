@@ -11,8 +11,8 @@
 
 ## 주요 기능
 -   **음악 검색 및 상세 정보**: 원하는 곡을 검색하고, 앨범 커버, 아티스트, 오디오 특성 등 상세 정보를 확인하고 노래를 들을 수 있습니다.
--   **평점 및 리뷰**: 좋아하는 곡에 별점을 매기고, 상세한 리뷰를 작성하여 다른 사용자들과 감상을 공유할 수 있습니다.
--   **개인화 추천**: 사용자의 청취 기록과 평가를 기반으로 한 개인화된 음악 추천을 제공합니다. 추천 기능은 [추천용 FastAPI 서버](https://github.com/silverttthin/muse-recommender-system)에서 서빙합니다.
+-   **평점 및 리뷰**: 좋아하는 곡에 별점을 매기고, 상세한 리뷰, 그리고 댓글을 작성하여 다른 사용자들과 감상을 공유할 수 있습니다.
+-   **개인화 추천**: 사용자의 평점 기록을 기반으로 한 개인화된 음악 추천을 제공합니다. 추천 기능은 [추천용 FastAPI 서버](https://github.com/silverttthin/muse-recommender-system)에서 서빙합니다.
 -   **음악 칼럼**: 음악에 대한 깊이 있는 이야기를 읽고 댓글로 의견을 나눌 수 있는 칼럼 게시판 기능을 제공합니다.
 -   **소셜 기능**: 사용자간 팔로잉/팔로우 및 목록을 확인할 수 있습니다.
 -   **관리자 페이지**: 사용자 관리 기능 및 패턴 매칭 비속어 필터링 기능을 통해 서비스 운영을 위한 관리자 기능을 제공합니다.
@@ -26,7 +26,7 @@
 
 ## 아키텍쳐
 <p align="center">
-<img width="581" height="421" alt="muse drawio (1)" src="https://github.com/user-attachments/assets/0118e63d-a4c3-4ee5-bb40-0a157af9878f" />
+<img width="581" height="421" alt="muse 아키텍쳐" src="https://github.com/user-attachments/assets/0118e63d-a4c3-4ee5-bb40-0a157af9878f" />
 </p>
 
 
