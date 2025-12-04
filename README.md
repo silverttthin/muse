@@ -26,7 +26,7 @@
 
 ## 아키텍쳐
 <p align="center">
-<img width="571" height="316" alt="muse drawio" src="https://github.com/user-attachments/assets/daf1f35b-1f3a-4372-bd3e-576c2f7a2e83" />
+<img width="581" height="421" alt="muse drawio (1)" src="https://github.com/user-attachments/assets/0118e63d-a4c3-4ee5-bb40-0a157af9878f" />
 </p>
 
 
